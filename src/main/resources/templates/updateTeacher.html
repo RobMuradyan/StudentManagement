@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>update teacher</title>
+</head>
+<body>
+update Teacher <br>
+<form action="/teachers/update" method="post" enctype="multipart/form-data">
+    <input type="hidden" th:value="${user.id}" name="id">
+    name: <input type="text" name="name" th:value="${user.name}"><br>
+    surname: <input type="text" name="surname" th:value="${user.surname}"><br>
+    email: <input type="text" name="email" th:value="${user.email}"><br>
+    <input type="hidden" th:value="TEACHER" name="userType">
+    lesson: <select name="lesson.id">
+    <option th:selected="${user.lesson.id==lesson.id}" th:each="lesson:${lessons}" th:text="${lesson.title}"
+            th:value="${lesson.id}"></option>
+</select><br>
+    <input type="file" name="picture">
+    <input type="submit">
+</form>
+<img th:if="${user.getPicName()!=null}" th:src="@{/getImage(picName=${user.picName})}" width="35px">
+<a th:if="${user.getPicName() != null}" th:href="@{/teacher/image/delete(id=${user.id})}">delete picture</a>
+
+</body>
+</html>
