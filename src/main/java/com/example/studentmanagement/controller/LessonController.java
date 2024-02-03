@@ -14,32 +14,38 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class LessonController {
     @Autowired
     private LessonRepository lessonRepository;
+
     @GetMapping("/lessons")
-    public  String LessonPage(ModelMap modelMap){
-        modelMap.addAttribute("lessons",lessonRepository.findAll());
+    public String LessonPage(ModelMap modelMap) {
+        modelMap.addAttribute("lessons", lessonRepository.findAll());
         return "lessons";
     }
+
     @GetMapping("/lessons/add")
-    public String addLessonPage(ModelMap modelMap){
+    public String addLessonPage(ModelMap modelMap) {
         return "addLesson";
     }
-    @PostMapping("/lesson/add")
-    public String addLesson(@ModelAttribute Lesson lesson){
+
+    @PostMapping("/lessons/add")
+    public String addLesson(@ModelAttribute Lesson lesson) {
         lessonRepository.save(lesson);
         return "redirect:/lessons";
     }
+
     @GetMapping("/lessons/delete/{id}")
-    public String deleteLessons(@PathVariable("id")int id){
-     lessonRepository.deleteById(id);
-     return "redirect:/lessons";
+    public String deleteLessons(@PathVariable("id") int id) {
+        lessonRepository.deleteById(id);
+        return "redirect:/lessons";
     }
+
     @GetMapping("/lessons/update/{id}")
-    public String updateLessonPage(@PathVariable("id")int id,ModelMap modelMap){
-        modelMap.addAttribute("lesson",lessonRepository.getById(id));
+    public String updateLessonPage(@PathVariable("id") int id, ModelMap modelMap) {
+        modelMap.addAttribute("lesson", lessonRepository.getById(id));
         return "updateLesson";
     }
+
     @PostMapping("/lessons/update")
-    public String updateLesson(@ModelAttribute Lesson lesson){
+    public String updateLesson(@ModelAttribute Lesson lesson) {
         lessonRepository.save(lesson);
         return "redirect:/lessons";
     }

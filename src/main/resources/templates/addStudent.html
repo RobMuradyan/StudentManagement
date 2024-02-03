@@ -10,8 +10,8 @@
     surname:<input type=" text" name="surname"><br>
     email:<input type="text" name=" email"><br>
     <input type="hidden"th:value="STUDENT" name="userType"><br>
-    <select name=" lesson.id">
-        <option  th:each="lesson:${lessons}" th:text="${lesson.title}" th:value="${lesson.id}"></option>
+    <select name="lesson.id">
+        <option th:each="lesson:${lessons}" th:text="${lesson.title}" th:value="${lesson.id}"></option>
     </select><br>
     <input type="file" name="picture"><br>
     <input type="submit"><br>

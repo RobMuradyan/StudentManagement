@@ -43,8 +43,8 @@ public class TeacherController {
             File file = new File(uploadDirectory, picName);
             multipartFile.transferTo(file);
             user.setPicName(picName);
-            userRepository.save(user);
-        }
+            userRepository.save(user);}
+
         return "redirect:/teachers";
     }
 
@@ -55,43 +55,50 @@ public class TeacherController {
     }
 
     @GetMapping("/teachers/update/{id}")
-    public String updateTeacherPage(@PathVariable("id")int id,ModelMap modelMap){
-        Optional<User> byid=userRepository.findById(id);
-        if (byid.isPresent()){
-            modelMap.addAttribute("user",byid.get());
-            modelMap.addAttribute("lesson",lessonRepository.findAll());
-        }else {
-            return  "redirect:/teachers";
+    public String updateTeacherPage(@PathVariable("id") int id, ModelMap modelMap) {
+        Optional<User> byid = userRepository.findById(id);
+        if (byid.isPresent()) {
+            modelMap.addAttribute("user", byid.get());
+            modelMap.addAttribute("lesson", lessonRepository.findAll());
+        } else {
+            return "redirect:/teachers";
         }
         return "updateTeacher";
     }
+
     @PostMapping("/teachers/update")
-    public String updateTeacher(@ModelAttribute User user,@RequestParam("picture") MultipartFile multipartFile)throws IOException{
+    public String updateTeacher(@ModelAttribute User user, @RequestParam("picture") MultipartFile multipartFile) throws IOException {
         if (multipartFile != null && !multipartFile.isEmpty()) {
             String picName = System.currentTimeMillis() + "_" + multipartFile.getOriginalFilename();
             File file = new File(uploadDirectory, picName);
             multipartFile.transferTo(file);
             user.setPicName(picName);
-            userRepository.save(user);
+            ;
+        } else {
+            Optional<User> fromdb = userRepository.findById(user.getId());
+            user.setPicName(fromdb.get().getPicName());
         }
+        userRepository.save(user);
         return "redirect:/teachers";
     }
+
     @GetMapping("/teachers/image/delete")
-    public String deleteTeacherImage(@RequestParam("id")int id){
-        Optional<User> byid=userRepository.findById(id);
-        if (byid.isEmpty()){
+    public String deleteTeacherImage(@RequestParam("id") int id) {
+        Optional<User> byid = userRepository.findById(id);
+        if (byid.isEmpty()) {
             return "redirect:/teachers";
-        }else {
-            User user =byid.get();
-            String picName=user.getPicName();
-            if (picName!=null){
-                user.setPicName(null);userRepository.save(user);
-                File file=new File(uploadDirectory,picName);
-                if (file.exists()){
+        } else {
+            User user = byid.get();
+            String picName = user.getPicName();
+            if (picName != null) {
+                user.setPicName(null);
+                userRepository.save(user);
+                File file = new File(uploadDirectory, picName);
+                if (file.exists()) {
                     file.delete();
                 }
             }
-            return "redirect:/teachers/update/"+user.getId();
+            return "redirect:/teachers/update/" + user.getId();
 
         }
     }

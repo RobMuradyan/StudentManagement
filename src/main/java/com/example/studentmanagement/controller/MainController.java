@@ -17,16 +17,19 @@ import java.io.IOException;
 public class MainController {
     @Value("${picture.upload.directory}")
     private String uploadDirectory;
+
     @GetMapping("/")
-    public String mainPage(){
+    public String mainPage() {
         return "home";
     }
-    @GetMapping(value = "getImage",produces =MediaType.IMAGE_JPEG_VALUE)
-    public @ResponseBody byte[] getImage(@RequestParam("picname")String picName)throws IOException{
-        File file=new File(uploadDirectory,picName);
-        if (file.exists()){
+
+    @GetMapping(value = "getImage"
+            , produces = MediaType.IMAGE_JPEG_VALUE)
+    public @ResponseBody byte[] getImage(@RequestParam("picName") String picName) throws IOException {
+        File file = new File(uploadDirectory, picName);
+        if (file.exists()) {
             return IOUtils.toByteArray(new FileInputStream(file));
         }
-        return  null;
+        return null;
     }
 }
